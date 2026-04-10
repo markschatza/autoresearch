@@ -2,6 +2,20 @@
 
 This repository follows the AutoResearch pattern with one fixed evaluation harness and one mutable training file.
 
+## Setup
+
+Before starting a fresh experiment run, work with the user to:
+
+1. Agree on a run tag. Propose a short tag based on today's date, such as `apr9`, and make sure `autoresearch/<tag>` does not already exist.
+2. Create the branch from the current mainline: `git checkout -b autoresearch/<tag>`.
+3. Read the in-scope files for full context:
+   - `README.md` for repository context.
+   - `prepare.py` for fixed constants, data preparation, tokenizer handling, data loading, and evaluation logic. Do not modify it.
+   - `train.py` for model architecture, optimizer settings, and the training loop. This is the experimental file.
+4. Verify the prepared data exists under `artifacts/`. If the required cached dataset or split artifacts are missing, run `uv run prepare.py` before training.
+5. Confirm the results directory is ready. `train.py` will write `results/latest.json` and timestamped JSON outputs after the first run.
+6. Confirm setup looks correct, then begin the experiment loop.
+
 ## Scope
 
 Read these files first:
@@ -20,11 +34,12 @@ The agent may:
 - Edit only `train.py`.
 - Run `uv run prepare.py` and `uv run train.py`.
 - Read prior result files under `results/`.
+- Update `program.md` only when the user explicitly asks to revise the research instructions.
 
 The agent may not:
 
 - Edit `prepare.py`.
-- Edit `program.md`, `README.md`, `pyproject.toml`, or any other file.
+- Edit `README.md`, `pyproject.toml`, or any other file unless the user explicitly asks.
 - Change the data source, data cleaning rules, target definition, metric, or split.
 - Install new packages or add dependencies beyond what is already declared in `pyproject.toml`.
 - Introduce hidden state outside explicit files under `artifacts/` and `results/`.
